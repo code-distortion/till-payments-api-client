@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <script src="/jquery.min.js"></script>
+        <script data-main="payment-js" src="https://test-gateway.tillpayments.com/js/integrated/payment.1.3.min.js"></script>
+    </head>
+    <body>
+
+        <form id="init_form" method="POST" onsubmit="init(); return false;">
+            <label>public_integration_key: <input type="text" id="public_integration_key" /></label>
+            <button type="submit">Submit</button>
+        </form>
+
+        <hr />
+
+        <form id="payment_form" method="POST" onsubmit="interceptSubmit(); return false;">
+            <label>card_holder <input type="text" id="card_holder" /></label><br />
+            <label>card_number <div id="card_number_div" style="width: 200px; height: 20px"></div></label><br />
+            <label>exp_month <input type="text" id="exp_month" /></label><br />
+            <label>exp_year <input type="text" id="exp_year" /></label><br />
+            <label>cvc <div id="cvv_div" style="width: 200px; height: 20px"></div></label>
+            <button type="submit">Submit</button>
+        </form>
+
+        <hr />
+
+        <label>transaction_token <input type="text" id="transaction_token" style="display: none" /></label><br />
+
+        <script type="text/javascript">
+
+            let payment;
+
+            function init() {
+                let publicIntegrationKey = $('#public_integration_key').val();
+                payment = new PaymentJs();
+                payment.init(publicIntegrationKey, 'card_number_div', 'cvv_div', function(payment) {});
+            }
+
+            function interceptSubmit() {
+                let data = {
+                    card_holder: $('#card_holder').val(),
+                    month: $('#exp_month').val(),
+                    year: $('#exp_year').val()
+                };
+                payment.tokenize(
+                    data,
+                    function(token, cardData) {
+                        $('#transaction_token').val(token).show();
+                    },
+                    // function(errors) {}
+                );
+            }
+        </script>
+    </body>
+</html>

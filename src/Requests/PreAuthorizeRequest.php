@@ -58,11 +58,6 @@ class PreAuthorizeRequest extends BaseRequest
             "currency" => $this->getCurrencyCode(),
             "withRegister" => $this->getWithRegister(),
         ];
-        return array_merge(
-            $requiredFields,
-            $this->buildKeyValuePair('referenceUuid', $this->getReferenceUuid()),
-            $this->buildKeyValuePair('transactionToken', $this->getTransactionToken()),
-            $this->buildKeyValuePair('description', $this->getDescription()),
-        );
+        return array_merge($requiredFields, $this->buildKeyValuePair('referenceUuid', $this->getReferenceUuid()), $this->buildKeyValuePair('transactionToken', $this->getTransactionToken()), $this->buildKeyValuePair('description', $this->getDescription()));
     }
 }

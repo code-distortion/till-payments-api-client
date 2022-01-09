@@ -63,10 +63,6 @@ class IncrementalAuthorizationRequest extends BaseRequest
             "amount" => $this->getAmount(),
             "currency" => $this->getCurrencyCode(),
         ];
-        return array_merge(
-            $requiredFields,
-            $this->buildKeyValuePair('transactionToken', $this->getTransactionToken()),
-            $this->buildKeyValuePair('description', $this->getDescription()),
-        );
+        return array_merge($requiredFields, $this->buildKeyValuePair('transactionToken', $this->getTransactionToken()), $this->buildKeyValuePair('description', $this->getDescription()));
     }
 }

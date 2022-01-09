@@ -5,7 +5,7 @@ namespace CodeDistortion\TillPayments\Support\ResponseTraits;
 trait HasUuidTrait
 {
     /** @var string|null UUID of the transaction. */
-    private ?string $uuid;
+    private $uuid;
 
 
 
@@ -15,7 +15,7 @@ trait HasUuidTrait
      * @param string|null $uuid The response's uuid.
      * @return void
      */
-    private function setUuid(?string $uuid): void
+    private function setUuid($uuid)
     {
         $this->uuid = $uuid;
     }
@@ -25,7 +25,7 @@ trait HasUuidTrait
      *
      * @return string|null
      */
-    public function getUuid(): ?string
+    public function getUuid()
     {
         return $this->uuid;
     }

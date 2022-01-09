@@ -18,7 +18,7 @@ class LaravelIntegrationTest extends LaravelTestCase
      * @test
      * @return void
      */
-    public function test_laravel_integration(): void
+    public function test_laravel_integration()
     {
         $client = app(TillPaymentsApiClient::class);
         $this->assertInstanceOf(TillPaymentsApiClient::class, $client);

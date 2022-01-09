@@ -5,7 +5,7 @@ namespace CodeDistortion\TillPayments\Support\RequestTraits;
 trait HasReferenceUuidTrait
 {
     /** @var string|null UUID of the preauthorized transaction. */
-    private ?string $referenceUuid = null;
+    private $referenceUuid;
 
 
 
@@ -15,7 +15,7 @@ trait HasReferenceUuidTrait
      * @param string|null $referenceUuid The uuid to set.
      * @return $this
      */
-    public function setReferenceUuid(?string $referenceUuid): static
+    public function setReferenceUuid($referenceUuid)
     {
         $this->referenceUuid = $referenceUuid;
         return $this;
@@ -26,7 +26,7 @@ trait HasReferenceUuidTrait
      *
      * @return string|null
      */
-    public function getReferenceUuid(): ?string
+    public function getReferenceUuid()
     {
         return $this->referenceUuid;
     }

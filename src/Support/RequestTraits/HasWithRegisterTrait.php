@@ -5,7 +5,7 @@ namespace CodeDistortion\TillPayments\Support\RequestTraits;
 trait HasWithRegisterTrait
 {
     /** @var boolean Tell Till Payments to "store customer's payment instrument for recurring transactions". */
-    private bool $withRegister = false;
+    private $withRegister = false;
 
 
 
@@ -15,7 +15,7 @@ trait HasWithRegisterTrait
      * @param boolean $withRegister Turn the flag on or off.
      * @return $this
      */
-    public function setWithRegister(bool $withRegister): static
+    public function setWithRegister($withRegister)
     {
         $this->withRegister = $withRegister;
         return $this;

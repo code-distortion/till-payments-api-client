@@ -12,16 +12,16 @@ use stdClass;
 class TransactionResponseError
 {
     /** @var string The error return message. */
-    private string $errorMessage;
+    private $errorMessage;
 
     /** @var integer The returned error-code. */
-    private int $errorCode;
+    private $errorCode;
 
     /** @var string|null The returned adapter message (if given). */
-    private ?string $adapterMessage;
+    private $adapterMessage;
 
     /** @var string|null The returned adapter-code (if given). */
-    private ?string $adapterCode;
+    private $adapterCode;
 
 
 
@@ -38,7 +38,7 @@ class TransactionResponseError
      * @param stdClass $data The data returned from Till Payments.
      * @return self
      */
-    public static function buildFromResponse(stdClass $data): self
+    public static function buildFromResponse($data): self
     {
         $return = new self();
         $return->errorMessage = $data->errorMessage ?? null;
@@ -74,7 +74,7 @@ class TransactionResponseError
      *
      * @return string|null
      */
-    public function getAdapterMessage(): ?string
+    public function getAdapterMessage()
     {
         return $this->adapterMessage;
     }
@@ -84,7 +84,7 @@ class TransactionResponseError
      *
      * @return string|null
      */
-    public function getAdapterCode(): ?string
+    public function getAdapterCode()
     {
         return $this->adapterCode;
     }

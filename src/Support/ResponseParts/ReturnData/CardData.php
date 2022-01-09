@@ -12,55 +12,55 @@ use stdClass;
 class CardData
 {
     /** @var string The type of credit card. */
-    private string $type;
+    private $type;
 
     /** @var string|null The card-holder's first name. */
-    private ?string $firstName;
+    private $firstName;
 
     /** @var string|null The card-holder's last name. */
-    private ?string $lastName;
+    private $lastName;
 
     /** @var string|null The card's country-code. */
-    private ?string $country;
+    private $country;
 
     /** @var string The card-holder's full name. */
-    private string $cardHolder;
+    private $cardHolder;
 
     /** @var integer The card's expiry month.  */
-    private int $expiryMonth;
+    private $expiryMonth;
 
     /** @var integer The card's expiry year.  */
-    private int $expiryYear;
+    private $expiryYear;
 
     /** @var string The card number's first 6 digits. */
-    private string $firstSixDigits;
+    private $firstSixDigits;
 
     /** @var string The card number's last 4 digits. */
-    private string $lastFourDigits;
+    private $lastFourDigits;
 
     /** @var string|null A fingerprint of the card. */
-    private ?string $fingerprint;
+    private $fingerprint;
 
     /** @var string|null The card's binBrand. */
-    private ?string $binBrand;
+    private $binBrand;
 
     /** @var string|null The card's binBank. */
-    private ?string $binBank;
+    private $binBank;
 
     /** @var string|null The card's binType. */
-    private ?string $binType;
+    private $binType;
 
     /** @var string|null The card's binLevel. */
-    private ?string $binLevel;
+    private $binLevel;
 
     /** @var string|null The card's binCountry. */
-    private ?string $binCountry;
+    private $binCountry;
 
     /** @var string|null The 3-D Secure value. */
-    private ?string $threeDSecure;
+    private $threeDSecure;
 
     /** @var string|null The eci value. */
-    private ?string $eci;
+    private $eci;
 
 
     /**
@@ -74,9 +74,9 @@ class CardData
      * Build based on the data returned from Till Payments.
      *
      * @param stdClass|null $data The data returned from Till Payments.
-     * @return self|null
+     * @return $this|null
      */
-    public static function buildFromResponse(?stdClass $data): ?self
+    public static function buildFromResponse($data)
     {
         if (is_null($data)) {
             return null;
@@ -118,9 +118,9 @@ class CardData
      * @return string
      */
     public function getReadableCardNumber(
-        string $middle = ' … ',
-        ?int $firstDigitCount = null,
-        ?int $lastDigitCount = null
+        $middle = ' … ',
+        $firstDigitCount = null,
+        $lastDigitCount = null
     ): string {
 
         $firstDigitCount = is_int($firstDigitCount) ? max(0, $firstDigitCount) : 9999;

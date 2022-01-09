@@ -35,10 +35,39 @@ class TillPaymentsApiClient
 //    private string $publicIntegrationKey;
 
     /** @var string The base part of the url path. */
-    private const BASE_PATH = '/api/v3';
-
-
-
+    const BASE_PATH = '/api/v3';
+    /**
+     * @var string
+     */
+    private $host;
+    /**
+     * @var string
+     */
+    private $userName;
+    /**
+     * @var string
+     */
+    private $password;
+    /**
+     * @var string
+     */
+    private $apiKey;
+    /**
+     * @var string
+     */
+    private $sharedSecret;
+    /**
+     * @var boolean
+     */
+    private $addSignature;
+    /**
+     * @var string
+     */
+    private $publicIntegrationKey;
+    /**
+     * @var GuzzleClient
+     */
+    private $httpClient;
     /**
      * @param string       $host                 The host to make api requests to.
      * @param string       $userName             The username.
@@ -49,16 +78,16 @@ class TillPaymentsApiClient
      * @param string       $publicIntegrationKey The payment.js key to use.
      * @param GuzzleClient $httpClient           The client used to make http requests.
      */
-    public function __construct(
-        private string $host,
-        private string $userName,
-        private string $password,
-        private string $apiKey,
-        private string $sharedSecret,
-        private bool $addSignature,
-        private string $publicIntegrationKey,
-        private GuzzleClient $httpClient,
-    ) {
+    public function __construct(string $host, string $userName, string $password, string $apiKey, string $sharedSecret, bool $addSignature, string $publicIntegrationKey, GuzzleClient $httpClient)
+    {
+        $this->host = $host;
+        $this->userName = $userName;
+        $this->password = $password;
+        $this->apiKey = $apiKey;
+        $this->sharedSecret = $sharedSecret;
+        $this->addSignature = $addSignature;
+        $this->publicIntegrationKey = $publicIntegrationKey;
+        $this->httpClient = $httpClient;
         $this->host = rtrim($host, '/');
     }
 
@@ -70,7 +99,7 @@ class TillPaymentsApiClient
      * @param BaseRequest $request The request to send.
      * @return Response
      */
-    public function send(BaseRequest $request): Response
+    public function send($request): Response
     {
         $responseData = $this->makeRequest(
             $request->getHttpMethod(),
@@ -111,7 +140,7 @@ class TillPaymentsApiClient
      * @param mixed[] $requestData The data to send.
      * @return stdClass|null
      */
-    private function makeRequest(string $httpMethod, string $requestPath, array $requestData): ?stdClass
+    private function makeRequest(string $httpMethod, string $requestPath, array $requestData)
     {
         $url = $this->host . $requestPath;
         $requestBody = (string) json_encode($requestData);
@@ -175,14 +204,8 @@ class TillPaymentsApiClient
      * @param string $date        The date header.
      * @return string
      */
-    private function buildRequestSignature(
-        string $httpMethod,
-        string $requestPath,
-        string $requestBody,
-        string $contentType,
-        string $date,
-    ): string {
-
+    private function buildRequestSignature(string $httpMethod, string $requestPath, string $requestBody, string $contentType, string $date): string
+    {
         $data = [
             $httpMethod,
             hash('sha512', $requestBody),
@@ -191,9 +214,7 @@ class TillPaymentsApiClient
             $requestPath,
         ];
         $data = implode("\n", $data);
-
         $sha512 = hash_hmac('sha512', $data, $this->sharedSecret, true);
-
         return base64_encode($sha512);
     }
 }

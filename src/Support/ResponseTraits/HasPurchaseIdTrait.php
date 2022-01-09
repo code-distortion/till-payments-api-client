@@ -5,7 +5,7 @@ namespace CodeDistortion\TillPayments\Support\ResponseTraits;
 trait HasPurchaseIdTrait
 {
     /** @var string|null Purchase ID of the transaction. */
-    private ?string $purchaseId;
+    private $purchaseId;
 
 
 
@@ -15,7 +15,7 @@ trait HasPurchaseIdTrait
      * @param string|null $purchaseId The response's purchaseId.
      * @return void
      */
-    private function setPurchaseId(?string $purchaseId): void
+    private function setPurchaseId($purchaseId)
     {
         $this->purchaseId = $purchaseId;
     }
@@ -25,7 +25,7 @@ trait HasPurchaseIdTrait
      *
      * @return string|null
      */
-    public function getPurchaseId(): ?string
+    public function getPurchaseId()
     {
         return $this->purchaseId;
     }

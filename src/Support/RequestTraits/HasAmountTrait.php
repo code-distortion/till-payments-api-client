@@ -5,10 +5,10 @@ namespace CodeDistortion\TillPayments\Support\RequestTraits;
 trait HasAmountTrait
 {
     /** @var string Decimals separated by ".", max. 3 decimals. */
-    private string $amount;
+    private $amount;
 
     /** @var string Three letter currency code. */
-    private string $currencyCode;
+    private $currencyCode;
 
 
 
@@ -18,7 +18,7 @@ trait HasAmountTrait
      * @param string $amount The amount to set.
      * @return $this
      */
-    public function setAmount(string $amount): static
+    public function setAmount($amount)
     {
         $this->amount = $amount;
         return $this;
@@ -40,7 +40,7 @@ trait HasAmountTrait
      * @param string $currencyCode The code to set.
      * @return $this
      */
-    public function setCurrencyCode(string $currencyCode): static
+    public function setCurrencyCode($currencyCode)
     {
         $this->currencyCode = $currencyCode;
         return $this;

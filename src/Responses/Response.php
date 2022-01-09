@@ -72,7 +72,7 @@ class Response
      * @param stdClass|null $responseData The data returned from Till Payments.
      * @return self
      */
-    public static function buildFromResponse(?stdClass $responseData): self
+    public static function buildFromResponse($responseData): self
     {
         $response = new self();
 

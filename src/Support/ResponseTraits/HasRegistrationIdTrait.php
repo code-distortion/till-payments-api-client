@@ -5,7 +5,7 @@ namespace CodeDistortion\TillPayments\Support\ResponseTraits;
 trait HasRegistrationIdTrait
 {
     /** @var string|null registrationId. */
-    private ?string $registrationId;
+    private $registrationId;
 
 
 
@@ -15,7 +15,7 @@ trait HasRegistrationIdTrait
      * @param string|null $registrationId The response's registrationId.
      * @return void
      */
-    private function setRegistrationId(?string $registrationId): void
+    private function setRegistrationId($registrationId)
     {
         $this->registrationId = $registrationId;
     }
@@ -25,7 +25,7 @@ trait HasRegistrationIdTrait
      *
      * @return string|null
      */
-    public function getRegistrationId(): ?string
+    public function getRegistrationId()
     {
         return $this->registrationId;
     }

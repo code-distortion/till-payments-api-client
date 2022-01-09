@@ -5,7 +5,7 @@ namespace CodeDistortion\TillPayments\Support\ResponseTraits;
 trait HasSuccessTrait
 {
     /** @var boolean Returns true or false depending on whether the request was successful. */
-    private bool $success;
+    private $success;
 
 
 
@@ -15,7 +15,7 @@ trait HasSuccessTrait
      * @param boolean $success The response's success flag.
      * @return void
      */
-    private function setSuccess(bool $success): void
+    private function setSuccess(bool $success)
     {
         $this->success = $success;
     }

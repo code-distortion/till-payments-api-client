@@ -5,7 +5,7 @@ namespace CodeDistortion\TillPayments\Support\RequestTraits;
 trait HasTransactionTokenTrait
 {
     /** @var string|null The token generated via payment.js. */
-    private ?string $transactionToken = null;
+    private $transactionToken;
 
 
 
@@ -15,7 +15,7 @@ trait HasTransactionTokenTrait
      * @param string|null $transactionToken The token generated via payment.js.
      * @return $this
      */
-    public function setTransactionToken(?string $transactionToken): static
+    public function setTransactionToken($transactionToken)
     {
         $this->transactionToken = $transactionToken;
         return $this;
@@ -26,7 +26,7 @@ trait HasTransactionTokenTrait
      *
      * @return string|null
      */
-    public function getTransactionToken(): ?string
+    public function getTransactionToken()
     {
         return $this->transactionToken;
     }

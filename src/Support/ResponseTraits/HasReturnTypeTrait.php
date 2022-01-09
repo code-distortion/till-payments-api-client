@@ -5,7 +5,7 @@ namespace CodeDistortion\TillPayments\Support\ResponseTraits;
 trait HasReturnTypeTrait
 {
     /** @var string|null FINISHED, REDIRECT, HTML, PENDING or ERROR. */
-    private ?string $returnType;
+    private $returnType;
 
 
 
@@ -15,7 +15,7 @@ trait HasReturnTypeTrait
      * @param string|null $returnType The response's returnType.
      * @return void
      */
-    private function setReturnType(?string $returnType): void
+    private function setReturnType($returnType)
     {
         $this->returnType = $returnType;
     }
@@ -25,7 +25,7 @@ trait HasReturnTypeTrait
      *
      * @return string|null
      */
-    public function getReturnType(): ?string
+    public function getReturnType()
     {
         return $this->returnType;
     }

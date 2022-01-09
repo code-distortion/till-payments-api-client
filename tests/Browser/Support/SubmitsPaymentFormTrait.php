@@ -69,7 +69,7 @@ trait SubmitsPaymentFormTrait
         string $expMonth,
         string $expYear,
         string $cvv
-    ): ?string {
+    ) {
 
         $transactionToken = null;
 
@@ -104,9 +104,8 @@ trait SubmitsPaymentFormTrait
                 ->click('#payment_form button');
 
             // read the transaction token returned from till-payments
-            $transactionToken = $browser->waitFor('#transaction_token', 20)
-                ->element('#transaction_token')
-                ?->getAttribute('value');
+            $transactionToken = ($element = $browser->waitFor('#transaction_token', 20)
+                ->element('#transaction_token')) ? $element->getAttribute('value') : null;
         };
 
         $this->browse($callback);

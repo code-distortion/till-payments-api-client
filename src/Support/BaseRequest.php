@@ -8,13 +8,13 @@ namespace CodeDistortion\TillPayments\Support;
 abstract class BaseRequest
 {
     /** @var string The http method to use when sending the request. */
-    private string $httpMethod;
+    private $httpMethod;
 
     /** @var string The type of request to make - is the beginning of the api url path. */
-    private string $requestType;
+    private $requestType;
 
     /** @var string The action to be called - is the end of the api url path. */
-    private string $requestAction;
+    private $requestAction;
 
 
 
@@ -40,7 +40,7 @@ abstract class BaseRequest
      * @param string $httpMethod The method to set.
      * @return void
      */
-    protected function setHttpMethod(string $httpMethod): void
+    protected function setHttpMethod($httpMethod)
     {
         $this->httpMethod = $httpMethod;
     }
@@ -61,7 +61,7 @@ abstract class BaseRequest
      * @param string $requestType The request-type to set.
      * @return void
      */
-    protected function setRequestType(string $requestType): void
+    protected function setRequestType($requestType)
     {
         $this->requestType = $requestType;
     }
@@ -82,7 +82,7 @@ abstract class BaseRequest
      * @param string $requestAction The request-action to set.
      * @return void
      */
-    protected function setRequestAction(string $requestAction): void
+    protected function setRequestAction($requestAction)
     {
         $this->requestAction = $requestAction;
     }
@@ -120,7 +120,7 @@ abstract class BaseRequest
      *                               false = don't set.
      * @return mixed[]
      */
-    protected function buildKeyValuePair(string $field, mixed $value, ?bool $override = null): array
+    protected function buildKeyValuePair($field, $value, $override = null): array
     {
         if ($override === false) {
             return [];

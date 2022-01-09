@@ -7,7 +7,7 @@ use CodeDistortion\TillPayments\Support\ResponseParts\ReturnData\ExtraData;
 trait HasExtraDataTrait
 {
     /** @var ExtraData|null The ExtraData (key-value-pair object). */
-    private ?ExtraData $extraData;
+    private $extraData;
 
 
 
@@ -17,7 +17,7 @@ trait HasExtraDataTrait
      * @param ExtraData|null $extraData The ExtraData object to use.
      * @return void
      */
-    private function setExtraData(?ExtraData $extraData): void
+    private function setExtraData($extraData)
     {
         $this->extraData = $extraData;
     }
@@ -27,7 +27,7 @@ trait HasExtraDataTrait
      *
      * @return ExtraData|null
      */
-    public function getExtraData(): ?ExtraData
+    public function getExtraData()
     {
         return $this->extraData;
     }
@@ -37,8 +37,8 @@ trait HasExtraDataTrait
      *
      * @return string|null
      */
-    public function getCaptureId(): ?string
+    public function getCaptureId()
     {
-        return $this->extraData?->get('captureId');
+        return ($extraData = $this->extraData) ? $extraData->get('captureId') : null;
     }
 }

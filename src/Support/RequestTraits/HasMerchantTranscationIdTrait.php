@@ -5,7 +5,7 @@ namespace CodeDistortion\TillPayments\Support\RequestTraits;
 trait HasMerchantTranscationIdTrait
 {
     /** @var string Your unique transaction id. */
-    private string $merchantTransactionId;
+    private $merchantTransactionId;
 
 
 
@@ -15,7 +15,7 @@ trait HasMerchantTranscationIdTrait
      * @param string $merchantTransactionId The id to set.
      * @return $this
      */
-    public function setMerchantTransactionId(string $merchantTransactionId): static
+    public function setMerchantTransactionId($merchantTransactionId)
     {
         $this->merchantTransactionId = $merchantTransactionId;
         return $this;

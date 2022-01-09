@@ -12,7 +12,7 @@ use stdClass;
 class ExtraData
 {
     /** @var array<string,string> The returned key-value pairs. */
-    private array $data = [];
+    private $data = [];
 
 
 
@@ -27,9 +27,9 @@ class ExtraData
      * Build based on the data returned from Till Payments.
      *
      * @param stdClass|null $data The data returned from Till Payments.
-     * @return self|null
+     * @return $this|null
      */
-    public static function buildFromResponse(?stdClass $data): ?self
+    public static function buildFromResponse($data)
     {
         if (is_null($data)) {
             return null;
@@ -48,7 +48,7 @@ class ExtraData
      * @param string $key The key to get the value for.
      * @return string|null
      */
-    public function get(string $key): ?string
+    public function get($key)
     {
         return $this->data[$key] ?? null;
     }

@@ -5,7 +5,7 @@ namespace CodeDistortion\TillPayments\Support\ResponseTraits;
 trait HasRedirectUrlTrait
 {
     /** @var string|null Where the customer must be redirected to. */
-    private ?string $redirectUrl;
+    private $redirectUrl;
 
 
 
@@ -15,7 +15,7 @@ trait HasRedirectUrlTrait
      * @param string|null $redirectUrl The response's redirectUrl.
      * @return void
      */
-    private function setRedirectUrl(?string $redirectUrl): void
+    private function setRedirectUrl($redirectUrl)
     {
         $this->redirectUrl = $redirectUrl;
     }
@@ -25,7 +25,7 @@ trait HasRedirectUrlTrait
      *
      * @return string|null
      */
-    public function getRedirectUrl(): ?string
+    public function getRedirectUrl()
     {
         return $this->redirectUrl;
     }

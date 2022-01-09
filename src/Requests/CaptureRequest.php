@@ -61,9 +61,6 @@ class CaptureRequest extends BaseRequest
             "currency" => $this->getCurrencyCode(),
             "referenceUuid" => $this->getReferenceUuid(),
         ];
-        return array_merge(
-            $requiredFields,
-            $this->buildKeyValuePair('description', $this->getDescription()),
-        );
+        return array_merge($requiredFields, $this->buildKeyValuePair('description', $this->getDescription()));
     }
 }

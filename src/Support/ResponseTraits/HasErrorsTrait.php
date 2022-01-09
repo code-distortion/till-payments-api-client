@@ -7,7 +7,7 @@ use CodeDistortion\TillPayments\Support\ResponseParts\TransactionResponseError;
 trait HasErrorsTrait
 {
     /** @var TransactionResponseError[] The TransactionResponseError-s.  */
-    private array $errors = [];
+    private $errors = [];
 
 
 
@@ -17,7 +17,7 @@ trait HasErrorsTrait
      * @param TransactionResponseError[] $errors The errors to set.
      * @return void
      */
-    private function setErrors(array $errors): void
+    private function setErrors(array $errors)
     {
         $this->errors = $errors;
     }
@@ -38,7 +38,7 @@ trait HasErrorsTrait
      * @param integer $count The error to retrieve.
      * @return TransactionResponseError|null
      */
-    public function getError(int $count = 0): ?TransactionResponseError
+    public function getError($count = 0)
     {
         return $this->errors[$count] ?? null;
     }

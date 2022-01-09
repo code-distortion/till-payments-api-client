@@ -23,7 +23,7 @@ class LaravelDuskTestCase extends TestCase
      * @return void
      * @throws FluentDotEnvException Thrown by FluentDotEnv when reading from fails.
      */
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 
@@ -39,7 +39,7 @@ class LaravelDuskTestCase extends TestCase
      * @return void
      * @throws FluentDotEnvException Thrown by FluentDotEnv when reading from fails.
      */
-    private function loadConfig(string $name, string $path, string $envFilePath = null): void
+    private function loadConfig(string $name, string $path, string $envFilePath = null)
     {
         if ($envFilePath) {
             FluentDotEnv::new()->load($envFilePath)->populateEnv(true);

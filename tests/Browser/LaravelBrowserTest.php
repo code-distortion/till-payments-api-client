@@ -26,7 +26,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
     use SubmitsPaymentFormTrait;
 
     /** @var TillPaymentsApiClient The Till Payments client to use. */
-    private TillPaymentsApiClient $tillClient;
+    private $tillClient;
 
 
 
@@ -35,7 +35,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
      *
      * @return void
      */
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 
@@ -50,7 +50,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
      * @test
      * @return void
      */
-    public function test_a_debit_failure(): void
+    public function test_a_debit_failure()
     {
         // send a debit $10
         $transactionToken = $this->submitInvalidPaymentForm();
@@ -60,7 +60,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $response = $this->sendRequest($request, false);
 
         // 2003 - "The transaction was declined"
-        $this->assertSame(2003, $response->getError(0)?->getErrorCode());
+        $this->assertSame(2003, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
     }
 
     /**
@@ -69,7 +69,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
      * @test
      * @return void
      */
-    public function test_a_debit_with_register(): void
+    public function test_a_debit_with_register()
     {
         // send a debit $10
         $transactionToken = $this->submitValidPaymentForm();
@@ -87,7 +87,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
      * @test
      * @return void
      */
-    public function test_a_preauth_capture_with_register(): void
+    public function test_a_preauth_capture_with_register()
     {
         // send a pre-auth $10
         $transactionToken = $this->submitValidPaymentForm();
@@ -110,7 +110,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
      * @test
      * @return void
      */
-    public function test_a_preauth_2captures(): void
+    public function test_a_preauth_2captures()
     {
         // send a pre-auth $10
         $transactionToken = $this->submitValidPaymentForm();
@@ -135,7 +135,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
      * @test
      * @return void
      */
-    public function test_a_preauth_capture_too_much(): void
+    public function test_a_preauth_capture_too_much()
     {
         // send a pre-auth $10
         $transactionToken = $this->submitValidPaymentForm();
@@ -153,7 +153,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $request = (new CaptureRequest((string) $referenceUuid, uniqid(), '5.01', 'AUD'));
         $response = $this->sendRequest($request, false);
         // 1006 - "Amount to capture exceeds amount left to capture"
-        $this->assertSame(1006, $response->getError(0)?->getErrorCode());
+        $this->assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
     }
 
     /**
@@ -162,7 +162,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
      * @test
      * @return void
      */
-    public function test_a_preauth_incrementalauth_void(): void
+    public function test_a_preauth_incrementalauth_void()
     {
         // send a pre-auth $10
         $transactionToken = $this->submitValidPaymentForm();
@@ -187,7 +187,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
      * @test
      * @return void
      */
-    public function test_a_preauth_capture_void(): void
+    public function test_a_preauth_capture_void()
     {
         // send a pre-auth $10
         $transactionToken = $this->submitValidPaymentForm();
@@ -220,7 +220,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
      * @test
      * @return void
      */
-    public function test_a_register_debit_deregister_debit(): void
+    public function test_a_register_debit_deregister_debit()
     {
         // send a register request
         $transactionToken = $this->submitValidPaymentForm();
@@ -252,14 +252,14 @@ class LaravelBrowserTest extends LaravelDuskTestCase
             ->setReferenceUuid((string) $registrationId);
         $response = $this->sendRequest($request, false);
         // 1006 - "referenced transaction is already de-registered"
-        $this->assertSame(1006, $response->getError(0)?->getErrorCode());
+        $this->assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
 
         // send a pre-auth $10 - against the registered card (will fail)
         $request = (new PreAuthorizeRequest(uniqid(), '10', 'AUD'))
             ->setReferenceUuid((string) $registrationId);
         $this->sendRequest($request, false);
         // 1006 - "referenced transaction is already de-registered"
-        $this->assertSame(1006, $response->getError(0)?->getErrorCode());
+        $this->assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
     }
 
     /**
@@ -268,7 +268,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
      * @test
      * @return void
      */
-    public function test_a_debit_refund(): void
+    public function test_a_debit_refund()
     {
         // send a debit $10
         $transactionToken = $this->submitValidPaymentForm();
@@ -289,7 +289,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
      * @test
      * @return void
      */
-    public function test_a_debit_refund_too_much(): void
+    public function test_a_debit_refund_too_much()
     {
         // send a debit $10
         $transactionToken = $this->submitValidPaymentForm();
@@ -307,7 +307,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $request = (new RefundRequest($referenceUuid, uniqid(), '5.01', 'AUD'));
         $response = $this->sendRequest($request, false);
         // 1006 - "amount to refund exceeds amount left to refund"
-        $this->assertSame(1006, $response->getError(0)?->getErrorCode());
+        $this->assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
     }
 
 

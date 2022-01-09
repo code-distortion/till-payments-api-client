@@ -5,7 +5,7 @@ namespace CodeDistortion\TillPayments\Support\ResponseTraits;
 trait HasPaymentMethodTrait
 {
     /** @var string|null Payment method used (if already determined). */
-    private ?string $paymentMethod;
+    private $paymentMethod;
 
 
 
@@ -15,7 +15,7 @@ trait HasPaymentMethodTrait
      * @param string|null $paymentMethod The response's paymentMethod.
      * @return void
      */
-    private function setPaymentMethod(?string $paymentMethod): void
+    private function setPaymentMethod($paymentMethod)
     {
         $this->paymentMethod = $paymentMethod;
     }
@@ -25,7 +25,7 @@ trait HasPaymentMethodTrait
      *
      * @return string|null
      */
-    public function getPaymentMethod(): ?string
+    public function getPaymentMethod()
     {
         return $this->paymentMethod;
     }

@@ -7,7 +7,7 @@ use CodeDistortion\TillPayments\Support\ResponseParts\ReturnData\CardData;
 trait HasCardDataTrait
 {
     /** @var CardData|null The CardData. */
-    private ?CardData $cardData;
+    private $cardData;
 
 
 
@@ -17,7 +17,7 @@ trait HasCardDataTrait
      * @param CardData|null $cardData The CardData object.
      * @return void
      */
-    private function setCardData(?CardData $cardData): void
+    private function setCardData($cardData)
     {
         $this->cardData = $cardData;
     }
@@ -27,7 +27,7 @@ trait HasCardDataTrait
      *
      * @return CardData|null
      */
-    public function getCardData(): ?CardData
+    public function getCardData()
     {
         return $this->cardData;
     }

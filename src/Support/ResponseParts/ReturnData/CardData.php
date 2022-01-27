@@ -110,6 +110,16 @@ class CardData
     }
 
     /**
+     * Retrieve the card's type.
+     *
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
      * Generate a readable version of the credit card number (the middle section will be missing).
      *
      * @param string       $middle          The string to put in the middle.

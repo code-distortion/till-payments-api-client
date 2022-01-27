@@ -63,6 +63,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $this->assertSame(2003, $response->getError(0)?->getErrorCode());
     }
 
+
     /**
      * Test a credit card debit (register the card as well).
      *
@@ -206,7 +207,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $this->sendRequest($request);
 
         // send a capture $17.50
-        $request = (new CaptureRequest((string) $referenceUuid, uniqid(), '5', 'AUD'));
+        $request = (new CaptureRequest((string) $referenceUuid, uniqid(), '17.5', 'AUD'));
         $this->sendRequest($request);
 
         // send a void
@@ -228,7 +229,6 @@ class LaravelBrowserTest extends LaravelDuskTestCase
             ->setTransactionToken($transactionToken);
         $response = $this->sendRequest($request);
 
-        $referenceUuid = $response->getUuid();
         $registrationId = $response->getRegistrationId();
 
         $this->assertNotNull($registrationId);
@@ -244,7 +244,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $this->sendRequest($request);
 
         // send a deregister request
-        $request = (new DeregisterRequest((string) $referenceUuid, uniqid()));
+        $request = (new DeregisterRequest((string) $registrationId, uniqid()));
         $this->sendRequest($request);
 
         // send a debit $10 (will fail)
@@ -284,7 +284,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
     }
 
     /**
-     * Test a credit debit with 2 refunds - that exceed the original amount.
+     * Test a credit debit with 3 refunds - where the last exceeds the original amount.
      *
      * @test
      * @return void
@@ -299,8 +299,12 @@ class LaravelBrowserTest extends LaravelDuskTestCase
 
         $referenceUuid = $response->getUuid();
 
-        // send a refund $5
-        $request = (new RefundRequest($referenceUuid, uniqid(), '5', 'AUD'));
+        // send a refund $2.50
+        $request = (new RefundRequest($referenceUuid, uniqid(), '2.5', 'AUD'));
+        $this->sendRequest($request);
+
+        // send a refund $2.50
+        $request = (new RefundRequest($referenceUuid, uniqid(), '2.5', 'AUD'));
         $this->sendRequest($request);
 
         // send a refund $5.01 (will fail)

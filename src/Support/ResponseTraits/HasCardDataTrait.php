@@ -17,7 +17,7 @@ trait HasCardDataTrait
      * @param CardData|null $cardData The CardData object.
      * @return void
      */
-    private function setCardData($cardData)
+    private function setCardData(?CardData $cardData): void
     {
         $this->cardData = $cardData;
     }
@@ -27,7 +27,7 @@ trait HasCardDataTrait
      *
      * @return CardData|null
      */
-    public function getCardData()
+    public function getCardData(): ?CardData
     {
         return $this->cardData;
     }

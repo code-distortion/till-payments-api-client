@@ -27,9 +27,9 @@ class ExtraData
      * Build based on the data returned from Till Payments.
      *
      * @param stdClass|null $data The data returned from Till Payments.
-     * @return $this|null
+     * @return self|null
      */
-    public static function buildFromResponse($data)
+    public static function buildFromResponse($data): ?self
     {
         if (is_null($data)) {
             return null;
@@ -48,7 +48,7 @@ class ExtraData
      * @param string $key The key to get the value for.
      * @return string|null
      */
-    public function get($key)
+    public function get($key): ?string
     {
         return $this->data[$key] ?? null;
     }

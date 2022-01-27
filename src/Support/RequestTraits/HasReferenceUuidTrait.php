@@ -26,7 +26,7 @@ trait HasReferenceUuidTrait
      *
      * @return string|null
      */
-    public function getReferenceUuid()
+    public function getReferenceUuid(): ?string
     {
         return $this->referenceUuid;
     }

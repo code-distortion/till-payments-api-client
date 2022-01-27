@@ -74,7 +74,7 @@ class TransactionResponseError
      *
      * @return string|null
      */
-    public function getAdapterMessage()
+    public function getAdapterMessage(): ?string
     {
         return $this->adapterMessage;
     }
@@ -84,7 +84,7 @@ class TransactionResponseError
      *
      * @return string|null
      */
-    public function getAdapterCode()
+    public function getAdapterCode(): ?string
     {
         return $this->adapterCode;
     }

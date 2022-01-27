@@ -15,7 +15,7 @@ trait HasReturnTypeTrait
      * @param string|null $returnType The response's returnType.
      * @return void
      */
-    private function setReturnType($returnType)
+    private function setReturnType(?string $returnType): void
     {
         $this->returnType = $returnType;
     }
@@ -25,7 +25,7 @@ trait HasReturnTypeTrait
      *
      * @return string|null
      */
-    public function getReturnType()
+    public function getReturnType(): ?string
     {
         return $this->returnType;
     }

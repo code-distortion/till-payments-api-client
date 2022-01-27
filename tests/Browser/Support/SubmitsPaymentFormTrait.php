@@ -69,7 +69,7 @@ trait SubmitsPaymentFormTrait
         string $expMonth,
         string $expYear,
         string $cvv
-    ) {
+    ): ?string {
 
         $transactionToken = null;
 

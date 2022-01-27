@@ -15,7 +15,7 @@ trait HasRedirectUrlTrait
      * @param string|null $redirectUrl The response's redirectUrl.
      * @return void
      */
-    private function setRedirectUrl($redirectUrl)
+    private function setRedirectUrl(?string $redirectUrl): void
     {
         $this->redirectUrl = $redirectUrl;
     }
@@ -25,7 +25,7 @@ trait HasRedirectUrlTrait
      *
      * @return string|null
      */
-    public function getRedirectUrl()
+    public function getRedirectUrl(): ?string
     {
         return $this->redirectUrl;
     }

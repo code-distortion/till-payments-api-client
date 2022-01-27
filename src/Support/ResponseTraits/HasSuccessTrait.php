@@ -15,7 +15,7 @@ trait HasSuccessTrait
      * @param boolean $success The response's success flag.
      * @return void
      */
-    private function setSuccess(bool $success)
+    private function setSuccess(bool $success): void
     {
         $this->success = $success;
     }

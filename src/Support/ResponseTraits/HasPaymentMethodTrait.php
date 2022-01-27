@@ -15,7 +15,7 @@ trait HasPaymentMethodTrait
      * @param string|null $paymentMethod The response's paymentMethod.
      * @return void
      */
-    private function setPaymentMethod($paymentMethod)
+    private function setPaymentMethod(?string $paymentMethod): void
     {
         $this->paymentMethod = $paymentMethod;
     }
@@ -25,7 +25,7 @@ trait HasPaymentMethodTrait
      *
      * @return string|null
      */
-    public function getPaymentMethod()
+    public function getPaymentMethod(): ?string
     {
         return $this->paymentMethod;
     }

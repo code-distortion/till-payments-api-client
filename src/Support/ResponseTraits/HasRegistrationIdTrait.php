@@ -15,7 +15,7 @@ trait HasRegistrationIdTrait
      * @param string|null $registrationId The response's registrationId.
      * @return void
      */
-    private function setRegistrationId($registrationId)
+    private function setRegistrationId(?string $registrationId): void
     {
         $this->registrationId = $registrationId;
     }
@@ -25,7 +25,7 @@ trait HasRegistrationIdTrait
      *
      * @return string|null
      */
-    public function getRegistrationId()
+    public function getRegistrationId(): ?string
     {
         return $this->registrationId;
     }

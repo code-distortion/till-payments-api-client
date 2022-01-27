@@ -16,14 +16,13 @@ use Orchestra\Testbench\Dusk\TestCase;
  */
 class LaravelDuskTestCase extends TestCase
 {
-
     /**
      * Set up the config ready for each test.
      *
      * @return void
      * @throws FluentDotEnvException Thrown by FluentDotEnv when reading from fails.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -39,7 +38,7 @@ class LaravelDuskTestCase extends TestCase
      * @return void
      * @throws FluentDotEnvException Thrown by FluentDotEnv when reading from fails.
      */
-    private function loadConfig(string $name, string $path, string $envFilePath = null)
+    private function loadConfig(string $name, string $path, string $envFilePath = null): void
     {
         if ($envFilePath) {
             FluentDotEnv::new()->load($envFilePath)->populateEnv(true);

@@ -15,7 +15,7 @@ trait HasPurchaseIdTrait
      * @param string|null $purchaseId The response's purchaseId.
      * @return void
      */
-    private function setPurchaseId($purchaseId)
+    private function setPurchaseId(?string $purchaseId): void
     {
         $this->purchaseId = $purchaseId;
     }
@@ -25,7 +25,7 @@ trait HasPurchaseIdTrait
      *
      * @return string|null
      */
-    public function getPurchaseId()
+    public function getPurchaseId(): ?string
     {
         return $this->purchaseId;
     }

@@ -35,7 +35,7 @@ class TillPaymentsApiClient
 //    private string $publicIntegrationKey;
 
     /** @var string The base part of the url path. */
-    const BASE_PATH = '/api/v3';
+    private const BASE_PATH = '/api/v3';
     /**
      * @var string
      */
@@ -140,7 +140,7 @@ class TillPaymentsApiClient
      * @param mixed[] $requestData The data to send.
      * @return stdClass|null
      */
-    private function makeRequest(string $httpMethod, string $requestPath, array $requestData)
+    private function makeRequest(string $httpMethod, string $requestPath, array $requestData): ?stdClass
     {
         $url = $this->host . $requestPath;
         $requestBody = (string) json_encode($requestData);

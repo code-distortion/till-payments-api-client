@@ -9,8 +9,8 @@ return [
     |
     | The scheme + hostname that requests will be sent to.
     |
-    | eg. https://test-gateway.tillpayments.com
-    |     https://gateway.tillpayments.com
+    | e.g. https://test-gateway.tillpayments.com
+    |      https://gateway.tillpayments.com
     |
     */
 

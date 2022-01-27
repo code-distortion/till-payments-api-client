@@ -74,9 +74,9 @@ class CardData
      * Build based on the data returned from Till Payments.
      *
      * @param stdClass|null $data The data returned from Till Payments.
-     * @return $this|null
+     * @return self|null
      */
-    public static function buildFromResponse($data)
+    public static function buildFromResponse($data): ?self
     {
         if (is_null($data)) {
             return null;
@@ -107,6 +107,16 @@ class CardData
 //        $return->globalFingerprint = $data->globalFingerprint ?? null; // not documented
 
         return $return;
+    }
+
+    /**
+     * Retrieve the card's type.
+     *
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     /**

@@ -17,7 +17,7 @@ trait HasExtraDataTrait
      * @param ExtraData|null $extraData The ExtraData object to use.
      * @return void
      */
-    private function setExtraData($extraData)
+    private function setExtraData(?ExtraData $extraData): void
     {
         $this->extraData = $extraData;
     }
@@ -27,7 +27,7 @@ trait HasExtraDataTrait
      *
      * @return ExtraData|null
      */
-    public function getExtraData()
+    public function getExtraData(): ?ExtraData
     {
         return $this->extraData;
     }
@@ -37,7 +37,7 @@ trait HasExtraDataTrait
      *
      * @return string|null
      */
-    public function getCaptureId()
+    public function getCaptureId(): ?string
     {
         return ($extraData = $this->extraData) ? $extraData->get('captureId') : null;
     }

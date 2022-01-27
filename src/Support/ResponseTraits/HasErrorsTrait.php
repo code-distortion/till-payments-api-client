@@ -17,7 +17,7 @@ trait HasErrorsTrait
      * @param TransactionResponseError[] $errors The errors to set.
      * @return void
      */
-    private function setErrors(array $errors)
+    private function setErrors(array $errors): void
     {
         $this->errors = $errors;
     }
@@ -38,7 +38,7 @@ trait HasErrorsTrait
      * @param integer $count The error to retrieve.
      * @return TransactionResponseError|null
      */
-    public function getError($count = 0)
+    public function getError($count = 0): ?TransactionResponseError
     {
         return $this->errors[$count] ?? null;
     }

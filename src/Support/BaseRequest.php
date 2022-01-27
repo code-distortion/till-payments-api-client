@@ -40,7 +40,7 @@ abstract class BaseRequest
      * @param string $httpMethod The method to set.
      * @return void
      */
-    protected function setHttpMethod($httpMethod)
+    protected function setHttpMethod($httpMethod): void
     {
         $this->httpMethod = $httpMethod;
     }
@@ -61,7 +61,7 @@ abstract class BaseRequest
      * @param string $requestType The request-type to set.
      * @return void
      */
-    protected function setRequestType($requestType)
+    protected function setRequestType($requestType): void
     {
         $this->requestType = $requestType;
     }
@@ -82,7 +82,7 @@ abstract class BaseRequest
      * @param string $requestAction The request-action to set.
      * @return void
      */
-    protected function setRequestAction($requestAction)
+    protected function setRequestAction($requestAction): void
     {
         $this->requestAction = $requestAction;
     }

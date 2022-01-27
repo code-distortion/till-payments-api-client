@@ -26,7 +26,7 @@ trait HasTransactionTokenTrait
      *
      * @return string|null
      */
-    public function getTransactionToken()
+    public function getTransactionToken(): ?string
     {
         return $this->transactionToken;
     }

@@ -11,8 +11,8 @@ use GuzzleHttp\Client as GuzzleClient;
  */
 class ServiceProvider extends BaseServiceProvider
 {
-    const CONFIG_NAME = 'code_distortion.till_payments';
-    const CONFIG_PATH = __DIR__ . '/config/config.php';
+    public const CONFIG_NAME = 'code_distortion.till_payments';
+    public const CONFIG_PATH = __DIR__ . '/config/config.php';
 
 
 
@@ -21,7 +21,7 @@ class ServiceProvider extends BaseServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->bind(TillPaymentsApiClient::class, function ($app) {
             return new TillPaymentsApiClient(
@@ -42,7 +42,7 @@ class ServiceProvider extends BaseServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->initialiseConfig();
         $this->publishesConfig();
@@ -55,7 +55,7 @@ class ServiceProvider extends BaseServiceProvider
      *
      * @return void
      */
-    protected function initialiseConfig()
+    protected function initialiseConfig(): void
     {
         $this->mergeConfigFrom(static::CONFIG_PATH, static::CONFIG_NAME);
     }
@@ -65,7 +65,7 @@ class ServiceProvider extends BaseServiceProvider
      *
      * @return void
      */
-    protected function publishesConfig()
+    protected function publishesConfig(): void
     {
         if (!$this->app->runningInConsole()) {
             return;

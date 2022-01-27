@@ -15,7 +15,7 @@ trait HasUuidTrait
      * @param string|null $uuid The response's uuid.
      * @return void
      */
-    private function setUuid($uuid)
+    private function setUuid(?string $uuid): void
     {
         $this->uuid = $uuid;
     }
@@ -25,7 +25,7 @@ trait HasUuidTrait
      *
      * @return string|null
      */
-    public function getUuid()
+    public function getUuid(): ?string
     {
         return $this->uuid;
     }

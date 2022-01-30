@@ -329,6 +329,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame($expectedSuccess, $response->wasSuccessful());
+        $this->assertSame(!$expectedSuccess, $response->hasErrors());
 
         return $response;
     }

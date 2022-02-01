@@ -329,7 +329,44 @@ class LaravelBrowserTest extends LaravelDuskTestCase
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame($expectedSuccess, $response->wasSuccessful());
+        $this->assertSame(!$expectedSuccess, $response->hasErrors());
 
         return $response;
+    }
+
+    /**
+     * Provide data for the test_transaction_indicators test below.
+     *
+     * @return array
+     */
+    public function transactionIndicatorDataProvider(): array
+    {
+        return [
+            [null],
+            ['SINGLE'],
+            ['INITIAL'],
+            ['RECURRING'],
+            ['CARDONFILE'],
+            ['CARDONFILE-MERCHANT-INITIATED'],
+            ['MOTO'],
+        ];
+    }
+
+    /**
+     * Test a credit card debit - with an invalid credit-card number.
+     *
+     * @test
+     * @dataProvider transactionIndicatorDataProvider
+     * @param string|null $transactionIndicator The transaction-indicator to test.
+     * @return void
+     */
+    public function test_transaction_indicators($transactionIndicator): void
+    {
+        // send a debit $10
+        $transactionToken = $this->submitValidPaymentForm();
+        $request = (new DebitRequest(uniqid(), '10', 'AUD'))
+            ->setTransactionToken($transactionToken)
+            ->setTransactionIndicator($transactionIndicator);
+        $this->sendRequest($request);
     }
 }

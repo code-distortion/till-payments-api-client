@@ -23,6 +23,16 @@ trait HasErrorsTrait
     }
 
     /**
+     * Check if the response has TransactionResponseError errors.
+     *
+     * @return boolean
+     */
+    public function hasErrors(): bool
+    {
+        return count($this->errors) > 0;
+    }
+
+    /**
      * Get all of the response's TransactionResponseError errors.
      *
      * @return TransactionResponseError[]

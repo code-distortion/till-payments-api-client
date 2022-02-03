@@ -5,6 +5,7 @@ namespace CodeDistortion\TillPayments\Requests;
 use CodeDistortion\TillPayments\Support\BaseRequest;
 use CodeDistortion\TillPayments\Support\RequestTraits\HasAmountTrait;
 use CodeDistortion\TillPayments\Support\RequestTraits\HasDescriptionTrait;
+use CodeDistortion\TillPayments\Support\RequestTraits\HasExtraDataTrait;
 use CodeDistortion\TillPayments\Support\RequestTraits\HasMerchantTranscationIdTrait;
 use CodeDistortion\TillPayments\Support\RequestTraits\HasReferenceUuidTrait;
 use CodeDistortion\TillPayments\Support\RequestTraits\HasTransactionIndicatorTrait;
@@ -22,6 +23,7 @@ class PreAuthorizeRequest extends BaseRequest
 {
     use HasAmountTrait;
     use HasDescriptionTrait;
+    use HasExtraDataTrait;
     use HasMerchantTranscationIdTrait;
     use HasReferenceUuidTrait;
     use HasTransactionIndicatorTrait;
@@ -63,9 +65,10 @@ class PreAuthorizeRequest extends BaseRequest
         return array_merge(
             $requiredFields,
             $this->buildKeyValuePair('referenceUuid', $this->getReferenceUuid()),
-            $this->buildKeyValuePair('transactionToken', $this->getTransactionToken()),
             $this->buildKeyValuePair('transactionIndicator', $this->getTransactionIndicator()),
+            $this->buildKeyValuePair('transactionToken', $this->getTransactionToken()),
             $this->buildKeyValuePair('description', $this->getDescription()),
+            $this->buildKeyValuePair('extraData', $this->getExtraData()),
         );
     }
 }

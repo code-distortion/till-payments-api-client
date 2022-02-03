@@ -2,6 +2,7 @@
 
 namespace CodeDistortion\TillPayments\Requests;
 
+use CodeDistortion\TillPayments\Support\RequestTraits\HasExtraDataTrait;
 use CodeDistortion\TillPayments\Support\RequestTraits\HasMerchantTranscationIdTrait;
 use CodeDistortion\TillPayments\Support\RequestTraits\HasReferenceUuidTrait;
 use CodeDistortion\TillPayments\Support\BaseRequest;
@@ -15,6 +16,7 @@ use CodeDistortion\TillPayments\Support\BaseRequest;
  */
 class DeregisterRequest extends BaseRequest
 {
+    use HasExtraDataTrait;
     use HasMerchantTranscationIdTrait;
     use HasReferenceUuidTrait;
 
@@ -42,9 +44,10 @@ class DeregisterRequest extends BaseRequest
      */
     public function buildRequestData(): array
     {
-        return [
+        $requiredFields = [
             "merchantTransactionId" => $this->getMerchantTransactionId(),
             "referenceUuid" => $this->getReferenceUuid(),
         ];
+        return array_merge($requiredFields, $this->buildKeyValuePair('extraData', $this->getExtraData()));
     }
 }

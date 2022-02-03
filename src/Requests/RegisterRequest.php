@@ -3,6 +3,7 @@
 namespace CodeDistortion\TillPayments\Requests;
 
 use CodeDistortion\TillPayments\Support\BaseRequest;
+use CodeDistortion\TillPayments\Support\RequestTraits\HasExtraDataTrait;
 use CodeDistortion\TillPayments\Support\RequestTraits\HasMerchantTranscationIdTrait;
 use CodeDistortion\TillPayments\Support\RequestTraits\HasTransactionTokenTrait;
 
@@ -15,6 +16,7 @@ use CodeDistortion\TillPayments\Support\RequestTraits\HasTransactionTokenTrait;
  */
 class RegisterRequest extends BaseRequest
 {
+    use HasExtraDataTrait;
     use HasMerchantTranscationIdTrait;
     use HasTransactionTokenTrait;
 
@@ -43,6 +45,6 @@ class RegisterRequest extends BaseRequest
         $requiredFields = [
             "merchantTransactionId" => $this->getMerchantTransactionId(),
         ];
-        return array_merge($requiredFields, $this->buildKeyValuePair('transactionToken', $this->getTransactionToken()));
+        return array_merge($requiredFields, $this->buildKeyValuePair('transactionToken', $this->getTransactionToken()), $this->buildKeyValuePair('extraData', $this->getExtraData()));
     }
 }

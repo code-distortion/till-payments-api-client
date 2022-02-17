@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use GuzzleHttp\Client as GuzzleClient;
 
 /**
- * RealNum & Percent ServiceProvider for Laravel.
+ * Till Payments API Client ServiceProvider for Laravel.
  */
 class ServiceProvider extends BaseServiceProvider
 {

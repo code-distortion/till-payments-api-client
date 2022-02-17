@@ -2,10 +2,14 @@
 
 namespace CodeDistortion\TillPayments;
 
+use Carbon\Carbon;
 use CodeDistortion\TillPayments\Responses\Response;
 use CodeDistortion\TillPayments\Support\BaseRequest;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Request as GuzzleRequest;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
 /**
@@ -33,6 +37,9 @@ class TillPaymentsApiClient
 //
 //    /** @var string The payment.js key to use. */
 //    private string $publicIntegrationKey;
+
+    /** @var callable|null The callback used to log each http request. */
+    private $loggerCallback = null;
 
     /** @var string The base part of the url path. */
     private const BASE_PATH = '/api/v3';
@@ -62,22 +69,53 @@ class TillPaymentsApiClient
         $this->host = rtrim($host, '/');
     }
 
+    /**
+     * Let the caller set a logger callback to log http requests.
+     *
+     * @param callable $callback The callback that performs the logging.
+     * @return void
+     */
+    public function setHttpRequestLogger(callable $callback): void
+    {
+        $this->loggerCallback = $callback;
+    }
+
 
 
     /**
      * Send an API request to Till Payments.
      *
-     * @param BaseRequest $request The request to send.
+     * @param BaseRequest $tillRequest The request to send.
      * @return Response
      */
-    public function send(BaseRequest $request): Response
+    public function send(BaseRequest $tillRequest): Response
     {
-        $responseData = $this->makeRequest(
-            $request->getHttpMethod(),
-            $this->buildRequestPath($request),
-            $request->buildRequestData()
-        );
-        return Response::buildFromResponse($responseData);
+        $httpRequest = $this->buildGuzzleRequest($tillRequest);
+        $httpResponse = null;
+        $tillResponse = null;
+
+        $start = Carbon::now('UTC');
+        $startTimestamp = microtime(true);
+
+        try {
+            $httpResponse = $this->httpClient->send($httpRequest);
+            $responseJson = json_decode($httpResponse->getBody()->getContents());
+            $tillResponse = Response::buildFromResponse($responseJson);
+
+        } catch (GuzzleException $e) {
+
+            $tillResponse ??= Response::buildFromResponse(null);
+
+        } finally {
+
+            $end = Carbon::now('UTC');
+            $timeTaken = microtime(true) - $startTimestamp;
+            $httpRequest->getBody()->rewind();
+            $httpResponse?->getBody()->rewind();
+            $this->logHttpRequest($httpRequest, $httpResponse, $tillResponse, $start, $end, $timeTaken);
+        }
+
+        return $tillResponse;
     }
 
 
@@ -89,6 +127,24 @@ class TillPaymentsApiClient
 
 
 
+
+    /**
+     * Build a guzzle request, ready to send.
+     *
+     * @param BaseRequest $tillRequest The Till Payments version of the request.
+     * @return GuzzleRequest
+     */
+    private function buildGuzzleRequest(BaseRequest $tillRequest): GuzzleRequest
+    {
+        $httpMethod = $tillRequest->getHttpMethod();
+        $requestPath = $this->buildRequestPath($tillRequest);
+        $requestData = $tillRequest->buildRequestData();
+        $url = $this->host . $requestPath;
+        $requestBody = (string) json_encode($requestData);
+        $headers = $this->buildRequestHeaders($httpMethod, $requestPath, $requestBody);
+
+        return new GuzzleRequest($httpMethod, $url, $headers, $requestBody);
+    }
 
     /**
      * Build the path part of an API url.
@@ -101,36 +157,6 @@ class TillPaymentsApiClient
         $type = $request->getRequestType();
         $action = $request->getRequestAction();
         return static::BASE_PATH . "/$type/$this->apiKey/$action";
-    }
-
-    /**
-     * Send a request to Till Payments.
-     *
-     * @param string  $httpMethod  The http method to use.
-     * @param string  $requestPath The path to make the request to.
-     * @param mixed[] $requestData The data to send.
-     * @return stdClass|null
-     */
-    private function makeRequest(string $httpMethod, string $requestPath, array $requestData): ?stdClass
-    {
-        $url = $this->host . $requestPath;
-        $requestBody = (string) json_encode($requestData);
-
-        $guzzleOptions = [
-            'headers' => $this->buildRequestHeaders($httpMethod, $requestPath, $requestBody),
-            'body' => $requestBody,
-        ];
-
-        try {
-
-            $response = $this->httpClient->request($httpMethod, $url, $guzzleOptions);
-            return json_decode($response->getBody()->getContents());
-
-        } catch (GuzzleException $e) {
-//            print "THE REQUEST CAUSED AN EXCEPTION:\n";
-//            var_dump($e->getMessage());
-            return null;
-        }
     }
 
     /**
@@ -195,5 +221,35 @@ class TillPaymentsApiClient
         $sha512 = hash_hmac('sha512', $data, $this->sharedSecret, true);
 
         return base64_encode($sha512);
+    }
+
+
+
+    /**
+     * Log the http request and response, if a callback has been specified.
+     *
+     * @param RequestInterface       $request      The request being sent.
+     * @param ResponseInterface|null $response     The response received.
+     * @param Response|null          $tillResponse The Till Payments version of the response.
+     * @param Carbon                 $start        When the request started.
+     * @param Carbon                 $end          When the request finished.
+     * @param float                  $timeTaken    The number of seconds taken.
+     * @return void
+     */
+    private function logHttpRequest(
+        RequestInterface $request,
+        ?ResponseInterface $response,
+        ?Response $tillResponse,
+        Carbon $start,
+        Carbon $end,
+        float $timeTaken
+    ): void {
+
+        if (!$this->loggerCallback) {
+            return;
+        }
+
+        $loggerCallback = $this->loggerCallback;
+        $loggerCallback($request, $response, $tillResponse, $start, $end, $timeTaken);
     }
 }

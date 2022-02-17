@@ -1,6 +1,7 @@
 build
 composer.lock
 docker
+todo.txt
 vendor
 .phpunit.result.cache
 .idea

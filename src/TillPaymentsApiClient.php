@@ -98,7 +98,7 @@ class TillPaymentsApiClient
         $startTimestamp = microtime(true);
 
         try {
-            $httpResponse = $this->httpClient->send($httpRequest);
+            $httpResponse = $this->httpClient->send($httpRequest, ['exceptions' => false]);
             $responseJson = json_decode($httpResponse->getBody()->getContents());
             $tillResponse = Response::buildFromResponse($responseJson);
 
@@ -111,7 +111,7 @@ class TillPaymentsApiClient
             $end = Carbon::now('UTC');
             $timeTaken = microtime(true) - $startTimestamp;
             $httpRequest->getBody()->rewind();
-            $httpResponse?->getBody()->rewind();
+            $httpResponse?->getBody()?->rewind();
             $this->logHttpRequest($httpRequest, $httpResponse, $tillResponse, $start, $end, $timeTaken);
         }
 

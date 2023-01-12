@@ -190,8 +190,6 @@ class LaravelBrowserTest extends LaravelDuskTestCase
      */
     public function test_a_preauth_capture_void(): void
     {
-        $this->markTestSkipped('The void fails in this situation - have asked Till Payments for advice');
-
         // send a pre-auth $10
         $transactionToken = $this->submitValidPaymentForm();
         $request = (new PreAuthorizeRequest(uniqid(), '10', 'AUD'))

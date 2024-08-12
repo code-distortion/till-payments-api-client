@@ -60,7 +60,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $response = $this->sendRequest($request, false);
 
         // 2003 - "The transaction was declined"
-        $this->assertSame(2003, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
+        self::assertSame(2003, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
     }
 
 
@@ -79,7 +79,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
             ->setWithRegister(true);
         $response = $this->sendRequest($request);
 
-        $this->assertNotNull($response->getRegistrationId());
+        self::assertNotNull($response->getRegistrationId());
     }
 
     /**
@@ -98,7 +98,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $response = $this->sendRequest($request);
 
         $referenceUuid = $response->getUuid();
-        $this->assertNotNull($response->getRegistrationId());
+        self::assertNotNull($response->getRegistrationId());
 
         // send a capture $10
         $request = (new CaptureRequest((string) $referenceUuid, uniqid(), '10', 'AUD'));
@@ -154,7 +154,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $request = (new CaptureRequest((string) $referenceUuid, uniqid(), '5.01', 'AUD'));
         $response = $this->sendRequest($request, false);
         // 1006 - "Amount to capture exceeds amount left to capture"
-        $this->assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
+        self::assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
     }
 
     /**
@@ -190,8 +190,6 @@ class LaravelBrowserTest extends LaravelDuskTestCase
      */
     public function test_a_preauth_capture_void(): void
     {
-        $this->markTestSkipped('The void fails in this situation - have asked Till Payments for advice');
-
         // send a pre-auth $10
         $transactionToken = $this->submitValidPaymentForm();
         $request = (new PreAuthorizeRequest(uniqid(), '10', 'AUD'))
@@ -233,7 +231,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
 
         $registrationId = $response->getRegistrationId();
 
-        $this->assertNotNull($registrationId);
+        self::assertNotNull($registrationId);
 
         // send a debit $10 - against the registered card
         $request = (new DebitRequest(uniqid(), '10', 'AUD'))
@@ -254,14 +252,14 @@ class LaravelBrowserTest extends LaravelDuskTestCase
             ->setReferenceUuid((string) $registrationId);
         $response = $this->sendRequest($request, false);
         // 1006 - "referenced transaction is already de-registered"
-        $this->assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
+        self::assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
 
         // send a pre-auth $10 - against the registered card (will fail)
         $request = (new PreAuthorizeRequest(uniqid(), '10', 'AUD'))
             ->setReferenceUuid((string) $registrationId);
         $this->sendRequest($request, false);
         // 1006 - "referenced transaction is already de-registered"
-        $this->assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
+        self::assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
     }
 
     /**
@@ -313,7 +311,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $request = (new RefundRequest($referenceUuid, uniqid(), '5.01', 'AUD'));
         $response = $this->sendRequest($request, false);
         // 1006 - "amount to refund exceeds amount left to refund"
-        $this->assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
+        self::assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
     }
 
 
@@ -329,9 +327,9 @@ class LaravelBrowserTest extends LaravelDuskTestCase
     {
         $response = $this->tillClient->send($request);
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame($expectedSuccess, $response->wasSuccessful());
-        $this->assertSame(!$expectedSuccess, $response->hasErrors());
+        self::assertInstanceOf(Response::class, $response);
+        self::assertSame($expectedSuccess, $response->wasSuccessful());
+        self::assertSame(!$expectedSuccess, $response->hasErrors());
 
         return $response;
     }
@@ -341,7 +339,7 @@ class LaravelBrowserTest extends LaravelDuskTestCase
      *
      * @return array
      */
-    public function transactionIndicatorDataProvider(): array
+    public static function transactionIndicatorDataProvider(): array
     {
         return [
             [null],

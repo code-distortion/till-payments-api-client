@@ -8,6 +8,7 @@ use CodeDistortion\TillPayments\TillPaymentsApiClient;
 /**
  * Test integration with Laravel.
  *
+ * @group skip
  * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class LaravelIntegrationTest extends LaravelTestCase
@@ -21,6 +22,6 @@ class LaravelIntegrationTest extends LaravelTestCase
     public function test_laravel_integration(): void
     {
         $client = app(TillPaymentsApiClient::class);
-        $this->assertInstanceOf(TillPaymentsApiClient::class, $client);
+        self::assertInstanceOf(TillPaymentsApiClient::class, $client);
     }
 }

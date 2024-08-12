@@ -28,7 +28,7 @@ trait SubmitsPaymentFormTrait
             '123'
         );
 
-        $this->assertNotEmpty($transactionToken);
+        self::assertNotEmpty($transactionToken);
 
         return $transactionToken;
     }
@@ -48,7 +48,7 @@ trait SubmitsPaymentFormTrait
             '123'
         );
 
-        $this->assertNotEmpty($transactionToken);
+        self::assertNotEmpty($transactionToken);
 
         return $transactionToken;
     }

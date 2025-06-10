@@ -4,6 +4,7 @@ namespace CodeDistortion\TillPayments\Tests\Integration;
 
 use CodeDistortion\TillPayments\Tests\LaravelTestCase;
 use CodeDistortion\TillPayments\TillPaymentsApiClient;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Test integration with Laravel.
@@ -19,6 +20,7 @@ class LaravelIntegrationTest extends LaravelTestCase
      * @test
      * @return void
      */
+    #[Test]
     public function test_laravel_integration(): void
     {
         $client = app(TillPaymentsApiClient::class);

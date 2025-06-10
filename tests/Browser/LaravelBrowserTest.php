@@ -15,6 +15,8 @@ use CodeDistortion\TillPayments\Support\BaseRequest;
 use CodeDistortion\TillPayments\Tests\Browser\Support\SubmitsPaymentFormTrait;
 use CodeDistortion\TillPayments\Tests\LaravelDuskTestCase;
 use CodeDistortion\TillPayments\TillPaymentsApiClient;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Test integration with a browser.
@@ -44,12 +46,17 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $this->tillClient = $tillClient;
     }
 
+
+
+
+
     /**
      * Test a credit card debit - with an invalid credit-card number.
      *
      * @test
      * @return void
      */
+    #[Test]
     public function test_a_debit_failure(): void
     {
         // send a debit $10
@@ -64,12 +71,16 @@ class LaravelBrowserTest extends LaravelDuskTestCase
     }
 
 
+
+
+
     /**
      * Test a credit card debit (register the card as well).
      *
      * @test
      * @return void
      */
+    #[Test]
     public function test_a_debit_with_register(): void
     {
         // send a debit $10
@@ -82,12 +93,17 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         self::assertNotNull($response->getRegistrationId());
     }
 
+
+
+
+
     /**
      * Test a credit card pre-auth with capture (register the card as well).
      *
      * @test
      * @return void
      */
+    #[Test]
     public function test_a_preauth_capture_with_register(): void
     {
         // send a pre-auth $10
@@ -105,12 +121,17 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $this->sendRequest($request);
     }
 
+
+
+
+
     /**
      * Test a credit card pre-auth with 2 captures.
      *
      * @test
      * @return void
      */
+    #[Test]
     public function test_a_preauth_2captures(): void
     {
         // send a pre-auth $10
@@ -130,12 +151,17 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $this->sendRequest($request);
     }
 
+
+
+
+
     /**
      * Test a credit card pre-auth with 2 captures - that exceed the original amount.
      *
      * @test
      * @return void
      */
+    #[Test]
     public function test_a_preauth_capture_too_much(): void
     {
         // send a pre-auth $10
@@ -157,12 +183,17 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         self::assertSame(1006, $response->getError(0)?->getErrorCode());
     }
 
+
+
+
+
     /**
      * Test a credit card pre-auth, incremental-authorisation and void.
      *
      * @test
      * @return void
      */
+    #[Test]
     public function test_a_preauth_incrementalauth_void(): void
     {
         // send a pre-auth $10
@@ -182,12 +213,17 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $this->sendRequest($request);
     }
 
+
+
+
+
     /**
      * Test a credit card pre-auth, capture and void.
      *
      * @test
      * @return void
      */
+    #[Test]
     public function test_a_preauth_capture_void(): void
     {
         // send a pre-auth $10
@@ -215,12 +251,17 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $this->sendRequest($request);
     }
 
+
+
+
+
     /**
      * Test a credit register,  debit,  de-register and another debit request.
      *
      * @test
      * @return void
      */
+    #[Test]
     public function test_a_register_debit_deregister_debit(): void
     {
         // send a register request
@@ -262,12 +303,17 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         self::assertSame(1006, $response->getError(0)?->getErrorCode());
     }
 
+
+
+
+
     /**
      * Test a credit debit with refund.
      *
      * @test
      * @return void
      */
+    #[Test]
     public function test_a_debit_refund(): void
     {
         // send a debit $10
@@ -283,12 +329,17 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $this->sendRequest($request);
     }
 
+
+
+
+
     /**
      * Test a credit debit with 3 refunds - where the last exceeds the original amount.
      *
      * @test
      * @return void
      */
+    #[Test]
     public function test_a_debit_refund_too_much(): void
     {
         // send a debit $10
@@ -316,6 +367,51 @@ class LaravelBrowserTest extends LaravelDuskTestCase
 
 
 
+
+
+    /**
+     * Test a credit card debit - with an invalid credit-card number.
+     *
+     * @test
+     * @dataProvider transactionIndicatorDataProvider
+     *
+     * @param string|null $transactionIndicator The transaction-indicator to test.
+     * @return void
+     */
+    #[Test]
+    #[DataProvider('transactionIndicatorDataProvider')]
+    public function test_transaction_indicators(?string $transactionIndicator): void
+    {
+        // send a debit $10
+        $transactionToken = $this->submitValidPaymentForm();
+        $request = (new DebitRequest(uniqid(), '10', 'AUD'))
+            ->setTransactionToken($transactionToken)
+            ->setTransactionIndicator($transactionIndicator);
+        $this->sendRequest($request);
+    }
+
+    /**
+     * Provide data for the test_transaction_indicators test below.
+     *
+     * @return array
+     */
+    public static function transactionIndicatorDataProvider(): array
+    {
+        return [
+            ['transactionIndicator' => null],
+            ['transactionIndicator' => 'SINGLE'],
+            ['transactionIndicator' => 'INITIAL'],
+            ['transactionIndicator' => 'RECURRING'],
+            ['transactionIndicator' => 'CARDONFILE'],
+            ['transactionIndicator' => 'CARDONFILE-MERCHANT-INITIATED'],
+            ['transactionIndicator' => 'MOTO'],
+        ];
+    }
+
+
+
+
+
     /**
      * Send a Till Payments request,  and check the response is successful (or not).
      *
@@ -332,41 +428,5 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         self::assertSame(!$expectedSuccess, $response->hasErrors());
 
         return $response;
-    }
-
-    /**
-     * Provide data for the test_transaction_indicators test below.
-     *
-     * @return array
-     */
-    public static function transactionIndicatorDataProvider(): array
-    {
-        return [
-            [null],
-            ['SINGLE'],
-            ['INITIAL'],
-            ['RECURRING'],
-            ['CARDONFILE'],
-            ['CARDONFILE-MERCHANT-INITIATED'],
-            ['MOTO'],
-        ];
-    }
-
-    /**
-     * Test a credit card debit - with an invalid credit-card number.
-     *
-     * @test
-     * @dataProvider transactionIndicatorDataProvider
-     * @param string|null $transactionIndicator The transaction-indicator to test.
-     * @return void
-     */
-    public function test_transaction_indicators(?string $transactionIndicator): void
-    {
-        // send a debit $10
-        $transactionToken = $this->submitValidPaymentForm();
-        $request = (new DebitRequest(uniqid(), '10', 'AUD'))
-            ->setTransactionToken($transactionToken)
-            ->setTransactionIndicator($transactionIndicator);
-        $this->sendRequest($request);
     }
 }

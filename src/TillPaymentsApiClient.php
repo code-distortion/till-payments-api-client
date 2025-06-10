@@ -97,12 +97,18 @@ class TillPaymentsApiClient
         $start = Carbon::now('UTC');
         $startTimestamp = microtime(true);
 
+        // when testing; we can avoid rate limiting if the sandbox environment returns 429 responses by slowing down
+        // sleep(20);
+        // dump('sending request: ' . $httpRequest->getMethod() . ' - ' . $httpRequest->getUri());
+
         try {
             $httpResponse = $this->httpClient->send($httpRequest, ['exceptions' => false]);
             $responseJson = json_decode($httpResponse->getBody()->getContents());
             $tillResponse = Response::buildFromResponse($responseJson);
 
         } catch (GuzzleException $e) {
+
+            // dump($e->getMessage());
 
             $tillResponse ??= Response::buildFromResponse(null);
 

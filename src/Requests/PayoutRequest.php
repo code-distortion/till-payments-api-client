@@ -65,6 +65,11 @@ class PayoutRequest extends BaseRequest
             "currency" => $this->getCurrencyCode(),
             "referenceUuid" => $this->getReferenceUuid(),
         ];
-        return array_merge($requiredFields, $this->buildKeyValuePair('transactionToken', $this->getTransactionToken()), $this->buildKeyValuePair('description', $this->getDescription()), $this->buildKeyValuePair('extraData', $this->getExtraData()));
+        return array_merge(
+            $requiredFields,
+            $this->buildKeyValuePair('transactionToken', $this->getTransactionToken()),
+            $this->buildKeyValuePair('description', $this->getDescription()),
+            $this->buildKeyValuePair('extraData', $this->getExtraData())
+        );
     }
 }

@@ -63,6 +63,10 @@ class RefundRequest extends BaseRequest
             "currency" => $this->getCurrencyCode(),
             "referenceUuid" => $this->getReferenceUuid(),
         ];
-        return array_merge($requiredFields, $this->buildKeyValuePair('description', $this->getDescription()), $this->buildKeyValuePair('extraData', $this->getExtraData()));
+        return array_merge(
+            $requiredFields,
+            $this->buildKeyValuePair('description', $this->getDescription()),
+            $this->buildKeyValuePair('extraData', $this->getExtraData())
+        );
     }
 }

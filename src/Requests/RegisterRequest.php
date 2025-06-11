@@ -45,6 +45,10 @@ class RegisterRequest extends BaseRequest
         $requiredFields = [
             "merchantTransactionId" => $this->getMerchantTransactionId(),
         ];
-        return array_merge($requiredFields, $this->buildKeyValuePair('transactionToken', $this->getTransactionToken()), $this->buildKeyValuePair('extraData', $this->getExtraData()));
+        return array_merge(
+            $requiredFields,
+            $this->buildKeyValuePair('transactionToken', $this->getTransactionToken()),
+            $this->buildKeyValuePair('extraData', $this->getExtraData())
+        );
     }
 }

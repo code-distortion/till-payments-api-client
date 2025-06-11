@@ -39,6 +39,6 @@ trait HasExtraDataTrait
      */
     public function getCaptureId(): ?string
     {
-        return ($extraData = $this->extraData) ? $extraData->get('captureId') : null;
+        return ($nullsafeVariable1 = $this->extraData) ? $nullsafeVariable1->get('captureId') : null;
     }
 }

@@ -62,6 +62,13 @@ class DebitRequest extends BaseRequest
             "currency" => $this->getCurrencyCode(),
             "withRegister" => $this->getWithRegister(),
         ];
-        return array_merge($requiredFields, $this->buildKeyValuePair('referenceUuid', $this->getReferenceUuid()), $this->buildKeyValuePair('transactionIndicator', $this->getTransactionIndicator()), $this->buildKeyValuePair('transactionToken', $this->getTransactionToken()), $this->buildKeyValuePair('description', $this->getDescription()), $this->buildKeyValuePair('extraData', $this->getExtraData()));
+        return array_merge(
+            $requiredFields,
+            $this->buildKeyValuePair('referenceUuid', $this->getReferenceUuid()),
+            $this->buildKeyValuePair('transactionIndicator', $this->getTransactionIndicator()),
+            $this->buildKeyValuePair('transactionToken', $this->getTransactionToken()),
+            $this->buildKeyValuePair('description', $this->getDescription()),
+            $this->buildKeyValuePair('extraData', $this->getExtraData())
+        );
     }
 }

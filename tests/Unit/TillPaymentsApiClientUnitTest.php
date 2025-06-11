@@ -3,6 +3,8 @@
 namespace CodeDistortion\TillPayments\Tests\Unit;
 
 use CodeDistortion\TillPayments\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Test the TillPaymentsApiClient class.
@@ -19,7 +21,6 @@ class TillPaymentsApiClientUnitTest extends TestCase
     public function test_something(): void
     {
         self::markTestSkipped();
-
         return;
     }
 }

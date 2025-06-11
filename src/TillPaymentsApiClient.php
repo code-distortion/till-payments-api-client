@@ -17,33 +17,7 @@ use stdClass;
  */
 class TillPaymentsApiClient
 {
-//    /** @var string The host to make api requests to. */
-//    private string $host;
-//
-//    /** @var string The api user username. */
-//    private string $userName;
-//
-//    /** @var string The api user password. */
-//    private string $password;
-//
-//    /** @var string The api key. */
-//    private string $apiKey;
-//
-//    /** @var string The api shared secret. */
-//    private string $sharedSecret;
-//
-//    /** @var boolean Whether to add a signature to requests or not. */
-//    private bool $addSignature;
-//
-//    /** @var string The payment.js key to use. */
-//    private string $publicIntegrationKey;
-
-    /** @var callable|null The callback used to log each http request. */
-    private $loggerCallback = null;
-
-    /** @var string The base part of the url path. */
-    private const BASE_PATH = '/api/v3';
-    /**
+/**
      * @var string
      */
     private $host;
@@ -75,6 +49,35 @@ class TillPaymentsApiClient
      * @var GuzzleClient
      */
     private $httpClient;
+    //    /** @var string The host to make api requests to. */
+//    private string $host;
+//
+//    /** @var string The api user username. */
+//    private string $userName;
+//
+//    /** @var string The api user password. */
+//    private string $password;
+//
+//    /** @var string The api key. */
+//    private string $apiKey;
+//
+//    /** @var string The api shared secret. */
+//    private string $sharedSecret;
+//
+//    /** @var boolean Whether to add a signature to requests or not. */
+//    private bool $addSignature;
+//
+//    /** @var string The payment.js key to use. */
+//    private string $publicIntegrationKey;
+
+    /** @var callable|null The callback used to log each http request. */
+    private $loggerCallback = null;
+
+    /** @var string The base part of the url path. */
+    private const BASE_PATH = '/api/v3';
+
+
+
     /**
      * @param string       $host                 The host to make api requests to.
      * @param string       $userName             The username.
@@ -85,8 +88,16 @@ class TillPaymentsApiClient
      * @param string       $publicIntegrationKey The payment.js key to use.
      * @param GuzzleClient $httpClient           The client used to make http requests.
      */
-    public function __construct(string $host, string $userName, string $password, string $apiKey, string $sharedSecret, bool $addSignature, string $publicIntegrationKey, GuzzleClient $httpClient)
-    {
+    public function __construct(
+        string $host,
+        string $userName,
+        string $password,
+        string $apiKey,
+        string $sharedSecret,
+        bool $addSignature,
+        string $publicIntegrationKey,
+        GuzzleClient $httpClient
+    ) {
         $this->host = $host;
         $this->userName = $userName;
         $this->password = $password;
@@ -126,12 +137,18 @@ class TillPaymentsApiClient
         $start = Carbon::now('UTC');
         $startTimestamp = microtime(true);
 
+        // when testing; we can avoid rate limiting if the sandbox environment returns 429 responses by slowing down
+        // sleep(20);
+        // dump('sending request: ' . $httpRequest->getMethod() . ' - ' . $httpRequest->getUri());
+
         try {
             $httpResponse = $this->httpClient->send($httpRequest, ['exceptions' => false]);
             $responseJson = json_decode($httpResponse->getBody()->getContents());
             $tillResponse = Response::buildFromResponse($responseJson);
 
         } catch (GuzzleException $e) {
+
+            // dump($e->getMessage());
 
             $tillResponse = $tillResponse ?? Response::buildFromResponse(null);
 
@@ -140,7 +157,7 @@ class TillPaymentsApiClient
             $end = Carbon::now('UTC');
             $timeTaken = microtime(true) - $startTimestamp;
             $httpRequest->getBody()->rewind();
-            ($getBody = ($httpResponse2 = $httpResponse) ? $httpResponse2->getBody() : null) ? $getBody->rewind() : null;
+            ($nullsafeVariable1 = ($nullsafeVariable2 = $httpResponse) ? $nullsafeVariable2->getBody() : null) ? $nullsafeVariable1->rewind() : null;
             $this->logHttpRequest($httpRequest, $httpResponse, $tillResponse, $start, $end, $timeTaken);
         }
 
@@ -230,8 +247,14 @@ class TillPaymentsApiClient
      * @param string $date        The date header.
      * @return string
      */
-    private function buildRequestSignature(string $httpMethod, string $requestPath, string $requestBody, string $contentType, string $date): string
-    {
+    private function buildRequestSignature(
+        string $httpMethod,
+        string $requestPath,
+        string $requestBody,
+        string $contentType,
+        string $date
+    ): string {
+
         $data = [
             $httpMethod,
             hash('sha512', $requestBody),
@@ -240,7 +263,9 @@ class TillPaymentsApiClient
             $requestPath,
         ];
         $data = implode("\n", $data);
+
         $sha512 = hash_hmac('sha512', $data, $this->sharedSecret, true);
+
         return base64_encode($sha512);
     }
 

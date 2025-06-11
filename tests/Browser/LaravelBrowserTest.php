@@ -15,6 +15,8 @@ use CodeDistortion\TillPayments\Support\BaseRequest;
 use CodeDistortion\TillPayments\Tests\Browser\Support\SubmitsPaymentFormTrait;
 use CodeDistortion\TillPayments\Tests\LaravelDuskTestCase;
 use CodeDistortion\TillPayments\TillPaymentsApiClient;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Test integration with a browser.
@@ -44,6 +46,10 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $this->tillClient = $tillClient;
     }
 
+
+
+
+
     /**
      * Test a credit card debit - with an invalid credit-card number.
      *
@@ -58,10 +64,12 @@ class LaravelBrowserTest extends LaravelDuskTestCase
             ->setTransactionToken($transactionToken)
             ->setWithRegister(true);
         $response = $this->sendRequest($request, false);
-
         // 2003 - "The transaction was declined"
-        self::assertSame(2003, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
+        self::assertSame(2003, ($nullsafeVariable1 = $response->getError(0)) ? $nullsafeVariable1->getErrorCode() : null);
     }
+
+
+
 
 
     /**
@@ -78,9 +86,12 @@ class LaravelBrowserTest extends LaravelDuskTestCase
             ->setTransactionToken($transactionToken)
             ->setWithRegister(true);
         $response = $this->sendRequest($request);
-
         self::assertNotNull($response->getRegistrationId());
     }
+
+
+
+
 
     /**
      * Test a credit card pre-auth with capture (register the card as well).
@@ -96,14 +107,16 @@ class LaravelBrowserTest extends LaravelDuskTestCase
             ->setTransactionToken($transactionToken)
             ->setWithRegister(true);
         $response = $this->sendRequest($request);
-
         $referenceUuid = $response->getUuid();
         self::assertNotNull($response->getRegistrationId());
-
         // send a capture $10
         $request = (new CaptureRequest((string) $referenceUuid, uniqid(), '10', 'AUD'));
         $this->sendRequest($request);
     }
+
+
+
+
 
     /**
      * Test a credit card pre-auth with 2 captures.
@@ -118,17 +131,18 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $request = (new PreAuthorizeRequest(uniqid(), '10', 'AUD'))
             ->setTransactionToken($transactionToken);
         $response = $this->sendRequest($request);
-
         $referenceUuid = $response->getUuid();
-
         // send a capture $5
         $request = (new CaptureRequest((string) $referenceUuid, uniqid(), '5', 'AUD'));
         $this->sendRequest($request);
-
         // send a capture $5
         $request = (new CaptureRequest((string) $referenceUuid, uniqid(), '5', 'AUD'));
         $this->sendRequest($request);
     }
+
+
+
+
 
     /**
      * Test a credit card pre-auth with 2 captures - that exceed the original amount.
@@ -143,19 +157,20 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $request = (new PreAuthorizeRequest(uniqid(), '10', 'AUD'))
             ->setTransactionToken($transactionToken);
         $response = $this->sendRequest($request);
-
         $referenceUuid = $response->getUuid();
-
         // send a capture $5
         $request = (new CaptureRequest((string) $referenceUuid, uniqid(), '5', 'AUD'));
         $this->sendRequest($request);
-
         // send a capture $5.01 (will fail)
         $request = (new CaptureRequest((string) $referenceUuid, uniqid(), '5.01', 'AUD'));
         $response = $this->sendRequest($request, false);
         // 1006 - "Amount to capture exceeds amount left to capture"
-        self::assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
+        self::assertSame(1006, ($nullsafeVariable2 = $response->getError(0)) ? $nullsafeVariable2->getErrorCode() : null);
     }
+
+
+
+
 
     /**
      * Test a credit card pre-auth, incremental-authorisation and void.
@@ -170,17 +185,18 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $request = (new PreAuthorizeRequest(uniqid(), '10', 'AUD'))
             ->setTransactionToken($transactionToken);
         $response = $this->sendRequest($request);
-
         $referenceUuid = $response->getUuid();
-
         // send an incremental authorisation $5
         $request = (new IncrementalAuthorizationRequest((string) $referenceUuid, uniqid(), '5', 'AUD'));
         $this->sendRequest($request);
-
         // send a void
         $request = (new VoidRequest((string) $referenceUuid, uniqid()));
         $this->sendRequest($request);
     }
+
+
+
+
 
     /**
      * Test a credit card pre-auth, capture and void.
@@ -195,25 +211,24 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $request = (new PreAuthorizeRequest(uniqid(), '10', 'AUD'))
             ->setTransactionToken($transactionToken);
         $response = $this->sendRequest($request);
-
         $referenceUuid = $response->getUuid();
-
         // send an incremental authorisation $5
         $request = (new IncrementalAuthorizationRequest((string) $referenceUuid, uniqid(), '5', 'AUD'));
         $this->sendRequest($request);
-
         // send an incremental authorisation $5
         $request = (new IncrementalAuthorizationRequest((string) $referenceUuid, uniqid(), '5', 'AUD'));
         $this->sendRequest($request);
-
         // send a capture $17.50
         $request = (new CaptureRequest((string) $referenceUuid, uniqid(), '17.5', 'AUD'));
         $this->sendRequest($request);
-
         // send a void
         $request = (new VoidRequest((string) $referenceUuid, uniqid()));
         $this->sendRequest($request);
     }
+
+
+
+
 
     /**
      * Test a credit register,  debit,  de-register and another debit request.
@@ -228,39 +243,36 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $request = (new RegisterRequest(uniqid()))
             ->setTransactionToken($transactionToken);
         $response = $this->sendRequest($request);
-
         $registrationId = $response->getRegistrationId();
-
         self::assertNotNull($registrationId);
-
         // send a debit $10 - against the registered card
         $request = (new DebitRequest(uniqid(), '10', 'AUD'))
             ->setReferenceUuid((string) $registrationId);
         $this->sendRequest($request);
-
         // send a pre-auth $10 - against the registered card
         $request = (new PreAuthorizeRequest(uniqid(), '10', 'AUD'))
             ->setReferenceUuid((string) $registrationId);
         $this->sendRequest($request);
-
         // send a deregister request
         $request = (new DeregisterRequest((string) $registrationId, uniqid()));
         $this->sendRequest($request);
-
         // send a debit $10 (will fail)
         $request = (new DebitRequest(uniqid(), '10', 'AUD'))
             ->setReferenceUuid((string) $registrationId);
         $response = $this->sendRequest($request, false);
         // 1006 - "referenced transaction is already de-registered"
-        self::assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
-
+        self::assertSame(1006, ($nullsafeVariable3 = $response->getError(0)) ? $nullsafeVariable3->getErrorCode() : null);
         // send a pre-auth $10 - against the registered card (will fail)
         $request = (new PreAuthorizeRequest(uniqid(), '10', 'AUD'))
             ->setReferenceUuid((string) $registrationId);
         $this->sendRequest($request, false);
         // 1006 - "referenced transaction is already de-registered"
-        self::assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
+        self::assertSame(1006, ($nullsafeVariable4 = $response->getError(0)) ? $nullsafeVariable4->getErrorCode() : null);
     }
+
+
+
+
 
     /**
      * Test a credit debit with refund.
@@ -275,13 +287,15 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $request = (new DebitRequest(uniqid(), '10', 'AUD'))
             ->setTransactionToken($transactionToken);
         $response = $this->sendRequest($request);
-
         $referenceUuid = $response->getUuid();
-
         // send a refund $10
         $request = (new RefundRequest($referenceUuid, uniqid(), '10', 'AUD'));
         $this->sendRequest($request);
     }
+
+
+
+
 
     /**
      * Test a credit debit with 3 refunds - where the last exceeds the original amount.
@@ -296,23 +310,62 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         $request = (new DebitRequest(uniqid(), 10, 'AUD'))
             ->setTransactionToken($transactionToken);
         $response = $this->sendRequest($request);
-
         $referenceUuid = $response->getUuid();
-
         // send a refund $2.50
         $request = (new RefundRequest($referenceUuid, uniqid(), '2.5', 'AUD'));
         $this->sendRequest($request);
-
         // send a refund $2.50
         $request = (new RefundRequest($referenceUuid, uniqid(), '2.5', 'AUD'));
         $this->sendRequest($request);
-
         // send a refund $5.01 (will fail)
         $request = (new RefundRequest($referenceUuid, uniqid(), '5.01', 'AUD'));
         $response = $this->sendRequest($request, false);
         // 1006 - "amount to refund exceeds amount left to refund"
-        self::assertSame(1006, ($getError = $response->getError(0)) ? $getError->getErrorCode() : null);
+        self::assertSame(1006, ($nullsafeVariable5 = $response->getError(0)) ? $nullsafeVariable5->getErrorCode() : null);
     }
+
+
+
+
+
+    /**
+     * Test a credit card debit - with an invalid credit-card number.
+     *
+     * @test
+     * @dataProvider transactionIndicatorDataProvider
+     *
+     * @param string|null $transactionIndicator The transaction-indicator to test.
+     * @return void
+     */
+    public function test_transaction_indicators($transactionIndicator): void
+    {
+        // send a debit $10
+        $transactionToken = $this->submitValidPaymentForm();
+        $request = (new DebitRequest(uniqid(), '10', 'AUD'))
+            ->setTransactionToken($transactionToken)
+            ->setTransactionIndicator($transactionIndicator);
+        $this->sendRequest($request);
+    }
+
+    /**
+     * Provide data for the test_transaction_indicators test below.
+     *
+     * @return array
+     */
+    public static function transactionIndicatorDataProvider(): array
+    {
+        return [
+            ['transactionIndicator' => null],
+            ['transactionIndicator' => 'SINGLE'],
+            ['transactionIndicator' => 'INITIAL'],
+            ['transactionIndicator' => 'RECURRING'],
+            ['transactionIndicator' => 'CARDONFILE'],
+            ['transactionIndicator' => 'CARDONFILE-MERCHANT-INITIATED'],
+            ['transactionIndicator' => 'MOTO'],
+        ];
+    }
+
+
 
 
 
@@ -332,41 +385,5 @@ class LaravelBrowserTest extends LaravelDuskTestCase
         self::assertSame(!$expectedSuccess, $response->hasErrors());
 
         return $response;
-    }
-
-    /**
-     * Provide data for the test_transaction_indicators test below.
-     *
-     * @return array
-     */
-    public static function transactionIndicatorDataProvider(): array
-    {
-        return [
-            [null],
-            ['SINGLE'],
-            ['INITIAL'],
-            ['RECURRING'],
-            ['CARDONFILE'],
-            ['CARDONFILE-MERCHANT-INITIATED'],
-            ['MOTO'],
-        ];
-    }
-
-    /**
-     * Test a credit card debit - with an invalid credit-card number.
-     *
-     * @test
-     * @dataProvider transactionIndicatorDataProvider
-     * @param string|null $transactionIndicator The transaction-indicator to test.
-     * @return void
-     */
-    public function test_transaction_indicators($transactionIndicator): void
-    {
-        // send a debit $10
-        $transactionToken = $this->submitValidPaymentForm();
-        $request = (new DebitRequest(uniqid(), '10', 'AUD'))
-            ->setTransactionToken($transactionToken)
-            ->setTransactionIndicator($transactionIndicator);
-        $this->sendRequest($request);
     }
 }

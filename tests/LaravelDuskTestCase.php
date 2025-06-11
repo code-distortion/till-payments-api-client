@@ -38,7 +38,7 @@ class LaravelDuskTestCase extends TestCase
      * @return void
      * @throws FluentDotEnvException Thrown by FluentDotEnv when reading from fails.
      */
-    private function loadConfig(string $name, string $path, string $envFilePath = null): void
+    private function loadConfig(string $name, string $path, ?string $envFilePath = null): void
     {
         if ($envFilePath) {
             FluentDotEnv::new()->load($envFilePath)->populateEnv(true);
@@ -66,6 +66,9 @@ class LaravelDuskTestCase extends TestCase
      */
     protected function driver(): RemoteWebDriver
     {
+        // to update chrome-driver, run:
+        //   ./vendor/bin/dusk-updater detect
+
         $options = (new ChromeOptions())->addArguments([
             '--disable-gpu',
             '--headless',

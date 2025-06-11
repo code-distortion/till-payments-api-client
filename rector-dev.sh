@@ -9,6 +9,8 @@ rm -rf _src _tests
 git add . --all
 git commit -m "WIP"
 
+rm -rf _src _tests
+
 cp -pr src _src
 cp -pr tests _tests
 

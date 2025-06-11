@@ -48,6 +48,9 @@ class VoidRequest extends BaseRequest
             "merchantTransactionId" => $this->getMerchantTransactionId(),
             "referenceUuid" => $this->getReferenceUuid(),
         ];
-        return array_merge($requiredFields, $this->buildKeyValuePair('extraData', $this->getExtraData()));
+        return array_merge(
+            $requiredFields,
+            $this->buildKeyValuePair('extraData', $this->getExtraData())
+        );
     }
 }

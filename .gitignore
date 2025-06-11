@@ -1,6 +1,8 @@
 .idea/
 .phpunit/
 .phpunit.cache/
+_src/
+_tests/
 build/
 infection/
 phpunit/
